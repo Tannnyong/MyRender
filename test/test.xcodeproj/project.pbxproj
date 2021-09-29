@@ -7,7 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5119E7C027041B7900B03B53 /* MatTransform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5119E7BE27041B7900B03B53 /* MatTransform.cpp */; };
 		519F7F4A2702B4ED00E07CB8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F492702B4ED00E07CB8 /* main.cpp */; };
+		519F7F552702B5F300E07CB8 /* libopencv_imgcodecs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 519F7F512702B5F300E07CB8 /* libopencv_imgcodecs.a */; };
+		519F7F562702B5F300E07CB8 /* libopencv_ml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 519F7F522702B5F300E07CB8 /* libopencv_ml.a */; };
+		519F7F572702B5F300E07CB8 /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 519F7F532702B5F300E07CB8 /* libopencv_core.a */; };
+		519F7F582702B5F300E07CB8 /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 519F7F542702B5F300E07CB8 /* libopencv_highgui.a */; };
+		519F7F5D2702B75400E07CB8 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F5B2702B75400E07CB8 /* Vertex.cpp */; };
+		519F7F612702B80900E07CB8 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F5F2702B80900E07CB8 /* Math.cpp */; };
+		519F7F652702C12E00E07CB8 /* ShaderData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F632702C12E00E07CB8 /* ShaderData.cpp */; };
+		519F7F682702CA1100E07CB8 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F662702CA1100E07CB8 /* Shader.cpp */; };
+		519F7F6C2702F4CE00E07CB8 /* FrameBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F6A2702F4CE00E07CB8 /* FrameBuffer.cpp */; };
+		519F7F70270309CF00E07CB8 /* Rasterization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F6E270309CF00E07CB8 /* Rasterization.cpp */; };
+		519F7F742703FF1800E07CB8 /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 519F7F722703FF1800E07CB8 /* Drawer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +35,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5119E7BE27041B7900B03B53 /* MatTransform.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MatTransform.cpp; sourceTree = "<group>"; };
+		5119E7BF27041B7900B03B53 /* MatTransform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MatTransform.hpp; sourceTree = "<group>"; };
 		519F7F462702B4ED00E07CB8 /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 		519F7F492702B4ED00E07CB8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		519F7F512702B5F300E07CB8 /* libopencv_imgcodecs.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_imgcodecs.a; path = ../../../../../../usr/local/Cellar/opencv/4.5.3_2/lib/libopencv_imgcodecs.a; sourceTree = "<group>"; };
+		519F7F522702B5F300E07CB8 /* libopencv_ml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_ml.a; path = ../../../../../../usr/local/Cellar/opencv/4.5.3_2/lib/libopencv_ml.a; sourceTree = "<group>"; };
+		519F7F532702B5F300E07CB8 /* libopencv_core.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_core.a; path = ../../../../../../usr/local/Cellar/opencv/4.5.3_2/lib/libopencv_core.a; sourceTree = "<group>"; };
+		519F7F542702B5F300E07CB8 /* libopencv_highgui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_highgui.a; path = ../../../../../../usr/local/Cellar/opencv/4.5.3_2/lib/libopencv_highgui.a; sourceTree = "<group>"; };
+		519F7F5B2702B75400E07CB8 /* Vertex.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Vertex.cpp; sourceTree = "<group>"; };
+		519F7F5C2702B75400E07CB8 /* Vertex.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Vertex.hpp; sourceTree = "<group>"; };
+		519F7F5F2702B80900E07CB8 /* Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
+		519F7F602702B80900E07CB8 /* Math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
+		519F7F632702C12E00E07CB8 /* ShaderData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderData.cpp; sourceTree = "<group>"; };
+		519F7F642702C12E00E07CB8 /* ShaderData.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ShaderData.hpp; sourceTree = "<group>"; };
+		519F7F662702CA1100E07CB8 /* Shader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
+		519F7F672702CA1100E07CB8 /* Shader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Shader.hpp; sourceTree = "<group>"; };
+		519F7F6A2702F4CE00E07CB8 /* FrameBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FrameBuffer.cpp; sourceTree = "<group>"; };
+		519F7F6B2702F4CE00E07CB8 /* FrameBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FrameBuffer.hpp; sourceTree = "<group>"; };
+		519F7F6E270309CF00E07CB8 /* Rasterization.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Rasterization.cpp; sourceTree = "<group>"; };
+		519F7F6F270309CF00E07CB8 /* Rasterization.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Rasterization.hpp; sourceTree = "<group>"; };
+		519F7F722703FF1800E07CB8 /* Drawer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
+		519F7F732703FF1800E07CB8 /* Drawer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Drawer.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,17 +64,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				519F7F552702B5F300E07CB8 /* libopencv_imgcodecs.a in Frameworks */,
+				519F7F562702B5F300E07CB8 /* libopencv_ml.a in Frameworks */,
+				519F7F572702B5F300E07CB8 /* libopencv_core.a in Frameworks */,
+				519F7F582702B5F300E07CB8 /* libopencv_highgui.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5119E7BD27041B2100B03B53 /* transform */ = {
+			isa = PBXGroup;
+			children = (
+				5119E7BE27041B7900B03B53 /* MatTransform.cpp */,
+				5119E7BF27041B7900B03B53 /* MatTransform.hpp */,
+			);
+			path = transform;
+			sourceTree = "<group>";
+		};
 		519F7F3D2702B4EC00E07CB8 = {
 			isa = PBXGroup;
 			children = (
+				5119E7BD27041B2100B03B53 /* transform */,
+				519F7F712703FEFE00E07CB8 /* drawer */,
+				519F7F6D270309BB00E07CB8 /* rasterization */,
+				519F7F622702C11800E07CB8 /* shader */,
+				519F7F5E2702B7A400E07CB8 /* math */,
+				519F7F5A2702B6FF00E07CB8 /* buffer */,
+				519F7F592702B63200E07CB8 /* vertex */,
 				519F7F482702B4ED00E07CB8 /* test */,
 				519F7F472702B4ED00E07CB8 /* Products */,
+				519F7F502702B5F300E07CB8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +113,73 @@
 				519F7F492702B4ED00E07CB8 /* main.cpp */,
 			);
 			path = test;
+			sourceTree = "<group>";
+		};
+		519F7F502702B5F300E07CB8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				519F7F532702B5F300E07CB8 /* libopencv_core.a */,
+				519F7F542702B5F300E07CB8 /* libopencv_highgui.a */,
+				519F7F512702B5F300E07CB8 /* libopencv_imgcodecs.a */,
+				519F7F522702B5F300E07CB8 /* libopencv_ml.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		519F7F592702B63200E07CB8 /* vertex */ = {
+			isa = PBXGroup;
+			children = (
+				519F7F5B2702B75400E07CB8 /* Vertex.cpp */,
+				519F7F5C2702B75400E07CB8 /* Vertex.hpp */,
+			);
+			path = vertex;
+			sourceTree = "<group>";
+		};
+		519F7F5A2702B6FF00E07CB8 /* buffer */ = {
+			isa = PBXGroup;
+			children = (
+				519F7F6A2702F4CE00E07CB8 /* FrameBuffer.cpp */,
+				519F7F6B2702F4CE00E07CB8 /* FrameBuffer.hpp */,
+			);
+			path = buffer;
+			sourceTree = "<group>";
+		};
+		519F7F5E2702B7A400E07CB8 /* math */ = {
+			isa = PBXGroup;
+			children = (
+				519F7F5F2702B80900E07CB8 /* Math.cpp */,
+				519F7F602702B80900E07CB8 /* Math.hpp */,
+			);
+			path = math;
+			sourceTree = "<group>";
+		};
+		519F7F622702C11800E07CB8 /* shader */ = {
+			isa = PBXGroup;
+			children = (
+				519F7F632702C12E00E07CB8 /* ShaderData.cpp */,
+				519F7F642702C12E00E07CB8 /* ShaderData.hpp */,
+				519F7F662702CA1100E07CB8 /* Shader.cpp */,
+				519F7F672702CA1100E07CB8 /* Shader.hpp */,
+			);
+			path = shader;
+			sourceTree = "<group>";
+		};
+		519F7F6D270309BB00E07CB8 /* rasterization */ = {
+			isa = PBXGroup;
+			children = (
+				519F7F6E270309CF00E07CB8 /* Rasterization.cpp */,
+				519F7F6F270309CF00E07CB8 /* Rasterization.hpp */,
+			);
+			path = rasterization;
+			sourceTree = "<group>";
+		};
+		519F7F712703FEFE00E07CB8 /* drawer */ = {
+			isa = PBXGroup;
+			children = (
+				519F7F722703FF1800E07CB8 /* Drawer.cpp */,
+				519F7F732703FF1800E07CB8 /* Drawer.hpp */,
+			);
+			path = drawer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,7 +239,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				519F7F742703FF1800E07CB8 /* Drawer.cpp in Sources */,
+				519F7F652702C12E00E07CB8 /* ShaderData.cpp in Sources */,
+				519F7F6C2702F4CE00E07CB8 /* FrameBuffer.cpp in Sources */,
+				5119E7C027041B7900B03B53 /* MatTransform.cpp in Sources */,
+				519F7F612702B80900E07CB8 /* Math.cpp in Sources */,
 				519F7F4A2702B4ED00E07CB8 /* main.cpp in Sources */,
+				519F7F70270309CF00E07CB8 /* Rasterization.cpp in Sources */,
+				519F7F5D2702B75400E07CB8 /* Vertex.cpp in Sources */,
+				519F7F682702CA1100E07CB8 /* Shader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +305,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/opencv/4.5.3_2/include/opencv4;
+				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.5.3_2/lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -230,6 +360,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/opencv/4.5.3_2/include/opencv4;
+				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/opencv/4.5.3_2/lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
