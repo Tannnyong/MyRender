@@ -75,9 +75,40 @@ public:
             float weight = (datavec[0].m_PreviewPos.GetY() - datavec[1].m_PreviewPos.GetY()) / (datavec[0].m_PreviewPos.GetY() - datavec[2].m_PreviewPos.GetY());
             ShaderData midPoint = ShaderData::Interpolation(datavec[0], datavec[2], weight);
             _UpTriangle(datavec[1], midPoint, datavec[0]);
-            _DownTriangle(datavec[0], midPoint, datavec[2]);
+            _DownTriangle(datavec[1], midPoint, datavec[2]);
         }
     }
+    
+    void ScanAxis(const ShaderData& x,const ShaderData& y,const ShaderData& z,const ShaderData& o)
+    {
+        if(!m_Buffer || !m_Shader)
+        {
+            std::cout<<"Error : m_Buffer or m_Shader is null"<<std::endl;
+            return;
+        }
+        ShaderData drawData;
+        int length = x.m_PreviewPos.GetX() - o.m_PreviewPos.GetX();
+        for(int i = 0; i < length; i++)
+        {
+            drawData = ShaderData::Interpolation(x, o, (float)i/length);
+            m_Buffer->WritePoint(drawData.m_PreviewPos.GetX()+FLOAT_OFFSET, drawData.m_PreviewPos.GetY()+FLOAT_OFFSET, x.m_Color);
+        }
+        
+        length = y.m_PreviewPos.GetX() - o.m_PreviewPos.GetX();
+        for(int i = 0; i < length; i++)
+        {
+            drawData = ShaderData::Interpolation(y, o, (float)i/length);
+            m_Buffer->WritePoint(drawData.m_PreviewPos.GetX()+FLOAT_OFFSET, drawData.m_PreviewPos.GetY()+FLOAT_OFFSET, y.m_Color);
+        }
+        
+        length = z.m_PreviewPos.GetX() - o.m_PreviewPos.GetX();
+        for(int i = 0; i < length; i++)
+        {
+            drawData = ShaderData::Interpolation(z, o, (float)i/length);
+            m_Buffer->WritePoint(drawData.m_PreviewPos.GetX()+FLOAT_OFFSET, drawData.m_PreviewPos.GetY()+FLOAT_OFFSET, z.m_Color);
+        }
+    }
+    
 private:
     
     void _UpTriangle(const ShaderData& t1,const ShaderData& t2, const ShaderData& t3)
@@ -95,7 +126,10 @@ private:
             right = t2;
         }
         top = t3;
-        left.IntegerizationPosX();
+        //fix2：旋转时有时会导致小数在0.1 - 0.9之间波动，加偏移会导致偶现黑色横条纹，提前整数化，防止出现黑色条纹
+        left.Integerization();
+        top.Integerization();
+        right.Integerization();
         int dy = top.m_PreviewPos.GetY() - right.m_PreviewPos.GetY();
         for(int i = dy;i >= 0; i--)
         {
@@ -124,6 +158,9 @@ private:
             right = t2;
         }
         bottom = t3;
+        left.Integerization();
+        bottom.Integerization();
+        right.Integerization();
         int dy = left.m_PreviewPos.GetY() - bottom.m_PreviewPos.GetY();
         for(int i = 0;i < dy; i++)
         {
@@ -146,6 +183,7 @@ private:
         {
             drawData = ShaderData::Interpolation(left, right, (float)i/length);
             color = m_Shader->FragmentShaderProcess(drawData);
+            //fix1: 这里加偏移 能够解决精度问题导致有黑色躁点
             m_Buffer->WritePoint(drawData.m_PreviewPos.GetX()+FLOAT_OFFSET, drawData.m_PreviewPos.GetY()+FLOAT_OFFSET, color);
         }
     }

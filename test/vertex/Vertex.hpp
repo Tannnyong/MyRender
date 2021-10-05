@@ -22,6 +22,7 @@ public:
 public:
     
     Vertex()=default;
+    Vertex(Vector4f pos,Vector4f color):m_Position(pos),m_Color(color){}
     ~Vertex()=default;
 };
 

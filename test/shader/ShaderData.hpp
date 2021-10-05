@@ -62,6 +62,23 @@ public:
         return ret;
     }
     
+    static void PerspectiveDivision(ShaderData& data)
+    {
+        data.m_PreviewPos =  data.m_PreviewPos / data.m_PreviewPos.GetW();
+        data.m_PreviewPos.SetW(1.0f);
+        data.m_PreviewPos.SetZ((data.m_PreviewPos.GetZ() + 1.0) * 0.5f);
+    }
+    
+    void Integerization()
+    {
+        int temp = m_PreviewPos.GetX()+FLOAT_OFFSET;
+        m_PreviewPos.SetX(temp);
+        temp = m_PreviewPos.GetY()+FLOAT_OFFSET;
+        m_PreviewPos.SetY(temp);
+        temp = m_PreviewPos.GetZ()+FLOAT_OFFSET;
+        m_PreviewPos.SetZ(temp);
+    }
+    
     void IntegerizationPosX()
     {
         int temp = m_PreviewPos.GetX()+FLOAT_OFFSET;

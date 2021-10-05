@@ -77,6 +77,39 @@ public:
         m_Point[2] = z;
     };
     
+    Vector3f operator-(const Vector3f& vec) const
+    {
+        return Vector3f(m_Point[0] - vec.GetX(),m_Point[1] - vec.GetY(),m_Point[2] - vec.GetZ());
+    }
+    
+    
+    static void VecCross(Vector3f& v1,Vector3f& v2,Vector3f& dst)
+    {
+        float x = v1.GetY() * v2.GetZ() - v1.GetZ() * v2.GetY();
+        float y = v1.GetZ() * v2.GetX() - v1.GetX() * v2.GetZ();
+        float z = v1.GetX() * v2.GetY() - v1.GetY() * v2.GetX();
+        dst.SetX(x);
+        dst.SetY(y);
+        dst.SetZ(z);
+    }
+    
+    static float VecDot(Vector3f& v1,Vector3f& v2)
+    {
+        float ret = v1.GetX() * v2.GetX() + v1.GetY() * v2.GetY() + v1.GetZ() * v2.GetZ();
+        return ret;
+    }
+    
+    void Normalize()
+    {
+        float len = sqrt(m_Point[0] * m_Point[0] + m_Point[1] * m_Point[1] + m_Point[2] * m_Point[2]);
+        if(len > 0.0f)
+        {
+            m_Point[0] = m_Point[0] / len;
+            m_Point[1] = m_Point[1] / len;
+            m_Point[2] = m_Point[2] / len;
+        }
+    }
+    
 private:
     cv::Vec3f m_Point;
 };
@@ -199,6 +232,10 @@ public:
         return ret;
     }
     
+    float& operator()(int row,int col)
+    {
+        return m_Matrix(row,col);
+    }
     
 private:
     cv::Matx44f m_Matrix;

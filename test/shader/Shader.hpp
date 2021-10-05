@@ -36,13 +36,19 @@ public:
     ShaderData VertexShaderProcess(const Vertex& vertex)
     {
         ShaderData dataout;
+        
+//        Matrix4x4f test;
+//        test(1,3) = -1.0f;
+//        test(2,2) = -1.0f;
+//        test(2,3) = -10.0f;
+//
         Matrix4x4f temp = m_ProjectMatrix * m_ViewMatrix * m_ModelMatrix;
         dataout.m_PreviewPos = temp * vertex.m_Position;
         dataout.m_Color = vertex.m_Color;
         return dataout;
     }
     
-    Vector4f FragmentShaderProcess(const ShaderData& datain)
+    Vector4f FragmentShaderProcess(ShaderData& datain)
     {
         return datain.m_Color;
     }
