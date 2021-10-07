@@ -18,11 +18,12 @@ public:
     Vector4f m_Position;
     //顶点颜色
     Vector4f m_Color;
-    
+    //
+    Vector2f m_TextureCoord;
 public:
     
     Vertex()=default;
-    Vertex(Vector4f pos,Vector4f color):m_Position(pos),m_Color(color){}
+    Vertex(Vector4f pos,Vector4f color,Vector2f coord):m_Position(pos),m_Color(color),m_TextureCoord(coord){}
     ~Vertex()=default;
 };
 

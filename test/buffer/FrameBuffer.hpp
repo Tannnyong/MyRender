@@ -20,10 +20,11 @@ public:
         m_With = w;
         m_Height = h;
         m_ColorBuffer.resize(w*h*4,0);
+        m_DepthBuffer.resize(w*h, 1.0f);
     }
     ~FrameBuffer() = default;
     
-    void Clear(const Vector4f& color)
+    void ClearColorBuffer(const Vector4f& color)
     {
         unsigned char * p = m_ColorBuffer.data();
         for (int i = 0; i < m_With*m_Height * 4; i += 4)
@@ -33,6 +34,11 @@ public:
             *(p + i + 2) = color.GetZ();
             *(p + i + 3) = color.GetW();
         }
+    }
+    
+    void ClearDepthBuffer()
+    {
+      m_DepthBuffer.assign(m_DepthBuffer.size(), 1.0f);
     }
     
     void WritePoint(const int &x,const int &y, const Vector4f& color)
@@ -50,6 +56,7 @@ public:
     
     unsigned char * GetDataPtr()
     {
+        //保存图片
 //        FILE* file = fopen("/Users/yong.tan/Documents/my/MyRender/2.rgba", "wb+");
 //        fwrite(m_ColorBuffer.data(), 1, m_ColorBuffer.size(), file);
 //        fclose(file);
@@ -57,11 +64,33 @@ public:
         return m_ColorBuffer.data();
     }
     
+    float GetDepth(const int &x, const int  &y)
+    {
+        float ret = 1.0f;
+        if (x < 0 || x >= m_With || y < 0 || y >= m_Height)
+        {
+            return ret;
+        }
+        int pos = (y * m_With + x);
+        ret = m_DepthBuffer[pos];
+        return ret;
+    }
+        
+    void WriteDepth(const int &x,const int &y, const float &depth)
+    {
+        if (x < 0 || x >= m_With || y < 0 || y >= m_Height)
+        {
+            return;
+        }
+        int pos = (y * m_With + x);
+        m_DepthBuffer[pos] = depth;
+    }
+    
 private:
     int m_With;
     int m_Height;
     std::vector<unsigned char> m_ColorBuffer;
-    
+    std::vector<float> m_DepthBuffer;
 };
 
 

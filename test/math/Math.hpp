@@ -18,6 +18,11 @@ class Vector2f
 public:
     Vector2f():m_Point(0.0f,0.0f){}
     Vector2f(float x,float y):m_Point(x,y){}
+    Vector2f(const Vector2f& vec2)
+    {
+        m_Point[0] = vec2.GetX();
+        m_Point[1] = vec2.GetY();
+    }
     ~Vector2f()=default;
     
 public:
@@ -37,6 +42,23 @@ public:
     {
         m_Point[1] = y;
     };
+    
+    Vector2f operator+(const Vector2f& vec) const
+    {
+        return Vector2f(m_Point[0] + vec.GetX(),m_Point[1] + vec.GetY());
+    }
+    Vector2f operator-(const Vector2f& vec) const
+    {
+        return Vector2f(m_Point[0] - vec.GetX(),m_Point[1] - vec.GetY());
+    }
+    Vector2f operator*(float factor) const
+    {
+        return Vector2f(m_Point[0] * factor,m_Point[1] * factor);
+    }
+    Vector2f operator/(float factor) const
+    {
+        return Vector2f(m_Point[0] / factor,m_Point[1] / factor);
+    }
     
     
 private:
@@ -162,6 +184,17 @@ public:
     {
         m_Point[3] = w;
     };
+    
+    void Normalize()
+    {
+        float len = sqrt(m_Point[0] * m_Point[0] + m_Point[1] * m_Point[1] + m_Point[2] * m_Point[2]);
+        if(len > 0.0f)
+        {
+            m_Point[0] = m_Point[0] / len;
+            m_Point[1] = m_Point[1] / len;
+            m_Point[2] = m_Point[2] / len;
+        }
+    }
     
     
     Vector4f operator+(const Vector4f& vec) const

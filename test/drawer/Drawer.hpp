@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <chrono>
 
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
@@ -34,7 +35,9 @@ public:
             m_Rasterization(nullptr),
             m_IsInit(false),
             m_Width(WINDOW_WIDTH),
-            m_Height(WINDOW_HEIGHT)
+            m_Height(WINDOW_HEIGHT),
+            m_FPSIndex(0),
+            m_TimeIndex(-1)
     {
     }
     ~Drawer()
@@ -48,6 +51,7 @@ public:
         m_Width = w;
         m_Height = h;
         m_Shader = new Shader();
+        m_Shader->LoadTexture("");
         m_Buffer = new FrameBuffer(m_Width,m_Height);
         m_Rasterization = new Rasterization();
         m_Rasterization->SetFrameBufferAndShader(m_Buffer, m_Shader);
@@ -73,16 +77,51 @@ public:
     void ClearBuffer(const  Vector4f&color)
     {
         if(!m_IsInit) return;
-        m_Buffer->Clear(color);
+        m_Buffer->ClearColorBuffer(color);
+        m_Buffer->ClearDepthBuffer();
+        
     }
     
     void Show()
     {
         if(!m_IsInit) return;
+        
         uchar* ptr = (uchar*)m_Buffer->GetDataPtr();
         cv::Mat image(m_Height,m_Width,CV_8UC4,ptr);
         cv::imshow("test",image);
-        cv::waitKey(0);
+
+        m_FPSIndex++;
+        
+        long tmp = std::chrono::system_clock::now().time_since_epoch().count();;
+        if(m_FPSIndex == -1)
+        {
+            m_TimeIndex = tmp;
+        }
+        if(tmp - m_TimeIndex >= 1000000)
+        {
+            m_TimeIndex = tmp;
+            std::cout<< "FPS = " << m_FPSIndex << std::endl;
+            m_FPSIndex = 0;
+        }
+        
+    }
+    
+    bool FaceCulling(const ShaderData &v1,const ShaderData &v2,const ShaderData &v3)
+    {
+
+        Vector4f tmp1 = v2.m_PreviewPos - v1.m_PreviewPos;
+        Vector4f tmp2 = v3.m_PreviewPos - v1.m_PreviewPos;
+
+        float x = tmp1.GetY() * tmp2.GetZ() - tmp1.GetZ() * tmp2.GetY();
+        float y = tmp1.GetZ() * tmp2.GetX() - tmp1.GetX() * tmp2.GetZ();
+        float z = tmp1.GetX() * tmp2.GetY() - tmp1.GetY() * tmp2.GetX();
+        
+        Vector3f norm(x,y,z);
+        norm.Normalize();
+        
+        Vector3f dview(0.0f,0.0f,-1.0f);
+        float res = Vector3f::VecDot(norm, dview);
+        return res < 0.0f;
     }
     
     void DrawTriangle(const Vertex &v1,const Vertex &v2,const Vertex &v3)
@@ -94,10 +133,19 @@ public:
         ShaderData data2 = m_Shader->VertexShaderProcess(v2);
         ShaderData data3 = m_Shader->VertexShaderProcess(v3);
         
+        ShaderData::PerspectiveDivision(data1);
+        ShaderData::PerspectiveDivision(data2);
+        ShaderData::PerspectiveDivision(data3);
+        
+        if(!FaceCulling(data1,data2,data3))
+        {
+            return;
+        }
+        
         data1.m_PreviewPos = viewportMat * data1.m_PreviewPos;
         data2.m_PreviewPos = viewportMat * data2.m_PreviewPos;
         data3.m_PreviewPos = viewportMat * data3.m_PreviewPos;
-
+        
         m_Rasterization->ScanLineTriangle(data1, data2, data3);
     }
     
@@ -144,8 +192,7 @@ public:
     void DrawMesh(const MeshData &mesh)
     {
         if(!m_IsInit) return;
-        Matrix4x4f viewportMat = ShaderData::GetViewPortMatrix(0, 0, m_Width, m_Height);
-        
+
         const std::vector<Vertex>& vbo = mesh.GetVBO();
         const std::vector<unsigned int>& ebo = mesh.GetEBO();
         if (ebo.empty())
@@ -162,21 +209,7 @@ public:
             p2.m_Position.SetW(1.0f);
             p3.m_Position.SetW(1.0f);
             
-            ShaderData d1, d2, d3;
-            
-            d1 = m_Shader->VertexShaderProcess(p1);
-            d2 = m_Shader->VertexShaderProcess(p2);
-            d3 = m_Shader->VertexShaderProcess(p3);
-
-            ShaderData::PerspectiveDivision(d1);
-            ShaderData::PerspectiveDivision(d2);
-            ShaderData::PerspectiveDivision(d3);
-            
-            d1.m_PreviewPos = viewportMat * d1.m_PreviewPos;
-            d2.m_PreviewPos = viewportMat * d2.m_PreviewPos;
-            d3.m_PreviewPos = viewportMat * d3.m_PreviewPos;
-
-            m_Rasterization->ScanLineTriangle(d1, d2, d3);
+            DrawTriangle(p1,p2,p3);
         }
     }
     
@@ -196,7 +229,9 @@ private:
     FrameBuffer* m_Buffer;
     Shader* m_Shader;
     Rasterization* m_Rasterization;
-
+    
+    long m_FPSIndex;
+    long m_TimeIndex;
 };
 
 #endif /* Drawer_hpp */

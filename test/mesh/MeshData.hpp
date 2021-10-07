@@ -76,7 +76,7 @@ public:
                 center + Vector4f(radius, radius, radius,0.0f)
             );
         AddMesh(front);
-                
+
         MeshData left = CreatePlane(
                 center + Vector4f(-radius, radius, -radius,0.0f),
                 center + Vector4f(-radius, -radius, -radius,0.0f),
@@ -118,18 +118,17 @@ public:
         AddMesh(down);
     }
     
-    //输入四个点坐标，分别是左上 左下 右下 右上 和法线方向
+    //输入四个点坐标，分别是左上 左下 右下 右上
     MeshData CreatePlane(const Vector4f& leftTop,
                          const Vector4f& leftBottom,
                          const Vector4f& rightBottom,
                          const Vector4f& rightTop)
-                         //const Vector4f& normal)
     {
         std::vector<Vertex> vertexs;
-        vertexs.push_back(Vertex(leftTop,Vector4f(255.0f, 0.0f,0.0f,255.0f)));
-        vertexs.push_back(Vertex(rightTop,Vector4f(0.0f, 255.0f,0.0f,255.0f)));
-        vertexs.push_back(Vertex(rightBottom,Vector4f(0.0f, 0.0f,255.0f,255.0f)));
-        vertexs.push_back(Vertex(leftBottom,Vector4f(255.0f, 0.0f,255.0f,255.0f)));
+        vertexs.push_back(Vertex(leftTop,Vector4f(255.0f, 0.0f,0.0f,255.0f),Vector2f(0.0f,1.0f)));
+        vertexs.push_back(Vertex(rightTop,Vector4f(0.0f, 255.0f,0.0f,255.0f),Vector2f(1.0f,1.0f)));
+        vertexs.push_back(Vertex(rightBottom,Vector4f(0.0f, 0.0f,255.0f,255.0f),Vector2f(1.0f,0.0f)));
+        vertexs.push_back(Vertex(leftBottom,Vector4f(255.0f, 0.0f,255.0f,255.0f),Vector2f(0.0f,0.0f)));
         
         std::vector<unsigned int> indexs{0,2,1,0,3,2};
         

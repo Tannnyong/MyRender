@@ -63,8 +63,9 @@ public:
         mat(1,2) = cosAngle;
     }
     
-    void InitRotationAxisMat(Matrix4x4f& mat, const float angle,const Vector4f& axis)
+    void InitRotationAxisMat(Matrix4x4f& mat, const float angle,Vector4f& axis)
     {
+        axis.Normalize();
         const float cosAngle = cos(angle / 180.0f * MATTRANSFORM_PI);
         const float sinAngle = sin(angle / 180.0f * MATTRANSFORM_PI);
         const float oneMinusCos = 1.0f - cosAngle;
@@ -81,6 +82,20 @@ public:
         mat(2,0) = x * z * oneMinusCos - y * sinAngle;
         mat(2,1) = y * z * oneMinusCos + x * sinAngle;
         mat(2,2) = z * z * oneMinusCos + cosAngle;
+    }
+    
+    void InitTranslationMat(Matrix4x4f& mat,const std::vector<float>& t)
+    {
+        mat(0,3) = t[0];
+        mat(1,3) = t[1];
+        mat(2,3) = t[2];
+    }
+    
+    void InitScaleMat(Matrix4x4f& mat,const std::vector<float>& s)
+    {
+        mat(0,0) = s[0];
+        mat(1,1) = s[1];
+        mat(2,2) = s[2];
     }
     
     void InitViewMatrix(Matrix4x4f& mat,Vector3f& pos,Vector3f& target,Vector3f& up)
@@ -107,23 +122,6 @@ public:
     
     void InitPersProjMatrix(Matrix4x4f& mat,float fov,const float aspect,float zNear,float zFar)
     {
-//        zNear = -zNear;
-//        zFar = -zFar;
-//
-//        float top = zNear * tan(fov * 0.5f / 180.0 * MATTRANSFORM_PI);
-//        float bottom = -top;
-//        float right = top*aspect;
-//        float left = -right;
-//
-//        mat(0,0) = 2.0f * zNear / (right - left);
-//        mat(0,2) = (right + left) / (right - left);
-//        mat(1,1) = 2.0f * zNear / (top - bottom);
-//        mat(1,2) = (top + bottom) / (top - bottom);
-//        mat(2,2) = -(zFar + zNear) / (zFar - zNear);
-//        mat(2,3) = -2.0 * zFar * zNear / (zFar - zNear);
-//        mat(3,2) = -1.0f;
-//        mat(3,3) = 0.0f;
-        
         const float zRange = zFar - zNear;
         const float tanHalfFov = tan(fov * 0.5f / 180.0 * MATTRANSFORM_PI);
 
@@ -133,6 +131,28 @@ public:
         mat(3,2) = -1.0f;
         mat(2,3) = -2.0f * zNear * zFar / zRange;
         mat(3,3) = 0.0f;
+    }
+    
+    void GetTransFormParam(const int& key,float& angle,std::vector<float>& t,std::vector<float>& s)
+    {
+        if(key == 'a')      t[0]-=0.1f;
+        else if(key == 'd') t[0]+=0.1f;
+        else if(key == 'w') t[1]+=0.1f;
+        else if(key == 's') t[1]-=0.1f;
+        else if(key == 'j') angle-=1.0f;
+        else if(key == 'l') angle+=1.0f;
+        else if(key == 'i')
+        {
+            s[0] = s[0] <= 0.1f ? s[0] : s[0]-0.1f;
+            s[1] = s[1] <= 0.1f ? s[1] : s[1]-0.1f;
+            s[2] = s[2] <= 0.1f ? s[2] : s[2]-0.1f;
+        }
+        else if(key == 'k')
+        {
+            s[0] = s[0] >= 1.9f ? s[0] : s[0]+0.1f;
+            s[1] = s[1] >= 1.9f ? s[1] : s[1]+0.1f;
+            s[2] = s[2] >= 1.9f ? s[2] : s[2]+0.1f;
+        }
     }
     
 };

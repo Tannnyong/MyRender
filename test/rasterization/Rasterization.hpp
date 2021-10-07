@@ -127,9 +127,9 @@ private:
         }
         top = t3;
         //fix2：旋转时有时会导致小数在0.1 - 0.9之间波动，加偏移会导致偶现黑色横条纹，提前整数化，防止出现黑色条纹
-        left.Integerization();
-        top.Integerization();
-        right.Integerization();
+        left.IntegerizationXY();
+        top.IntegerizationXY();
+        right.IntegerizationXY();
         int dy = top.m_PreviewPos.GetY() - right.m_PreviewPos.GetY();
         for(int i = dy;i >= 0; i--)
         {
@@ -158,9 +158,9 @@ private:
             right = t2;
         }
         bottom = t3;
-        left.Integerization();
-        bottom.Integerization();
-        right.Integerization();
+        left.IntegerizationXY();
+        bottom.IntegerizationXY();
+        right.IntegerizationXY();
         int dy = left.m_PreviewPos.GetY() - bottom.m_PreviewPos.GetY();
         for(int i = 0;i < dy; i++)
         {
@@ -179,12 +179,26 @@ private:
         int length = right.m_PreviewPos.GetX() - left.m_PreviewPos.GetX();
         ShaderData drawData;
         Vector4f color;
+        int x = 0;
+        int y = 0;
+        float z = 0;
         for(int i = 0; i < length; i++)
         {
             drawData = ShaderData::Interpolation(left, right, (float)i/length);
+            //fix1: 这里xy加偏移 能够解决精度问题导致有黑色躁点
+            float zFactor = drawData.m_Factor;
+            drawData.m_TextureCoord =  drawData.m_TextureCoord / zFactor;
+            x = drawData.m_PreviewPos.GetX()+FLOAT_OFFSET;
+            y = drawData.m_PreviewPos.GetY()+FLOAT_OFFSET;
+            z = drawData.m_PreviewPos.GetZ();
             color = m_Shader->FragmentShaderProcess(drawData);
-            //fix1: 这里加偏移 能够解决精度问题导致有黑色躁点
-            m_Buffer->WritePoint(drawData.m_PreviewPos.GetX()+FLOAT_OFFSET, drawData.m_PreviewPos.GetY()+FLOAT_OFFSET, color);
+            
+            float depth = m_Buffer->GetDepth(x, y);
+            if(depth > z)
+            {
+                m_Buffer->WritePoint(x, y, color);
+                m_Buffer->WriteDepth(x, y, z);
+            }
         }
     }
     
