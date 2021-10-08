@@ -23,9 +23,6 @@
 #include "../mesh/MeshData.hpp"
 
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-
 class Drawer
 {
 
@@ -90,62 +87,43 @@ public:
         cv::Mat image(m_Height,m_Width,CV_8UC4,ptr);
         cv::imshow("test",image);
 
-        m_FPSIndex++;
-        
-        long tmp = std::chrono::system_clock::now().time_since_epoch().count();;
-        if(m_FPSIndex == -1)
-        {
-            m_TimeIndex = tmp;
-        }
-        if(tmp - m_TimeIndex >= 1000000)
-        {
-            m_TimeIndex = tmp;
-            std::cout<< "FPS = " << m_FPSIndex << std::endl;
-            m_FPSIndex = 0;
-        }
-        
-    }
-    
-    bool FaceCulling(const ShaderData &v1,const ShaderData &v2,const ShaderData &v3)
-    {
-
-        Vector4f tmp1 = v2.m_PreviewPos - v1.m_PreviewPos;
-        Vector4f tmp2 = v3.m_PreviewPos - v1.m_PreviewPos;
-
-        float x = tmp1.GetY() * tmp2.GetZ() - tmp1.GetZ() * tmp2.GetY();
-        float y = tmp1.GetZ() * tmp2.GetX() - tmp1.GetX() * tmp2.GetZ();
-        float z = tmp1.GetX() * tmp2.GetY() - tmp1.GetY() * tmp2.GetX();
-        
-        Vector3f norm(x,y,z);
-        norm.Normalize();
-        
-        Vector3f dview(0.0f,0.0f,-1.0f);
-        float res = Vector3f::VecDot(norm, dview);
-        return res < 0.0f;
+        _CalculatFPS();
     }
     
     void DrawTriangle(const Vertex &v1,const Vertex &v2,const Vertex &v3)
     {
         if(!m_IsInit) return;
-        Matrix4x4f viewportMat = ShaderData::GetViewPortMatrix(0, 0, m_Width, m_Height);
         
+        //视锥体剔除
+        m_Shader->UpdateViewPlanes();
+        if (!m_Shader->ViewCull(v1.m_Position,v2.m_Position,v3.m_Position))
+        {
+            return;
+        }
+        
+        //顶点着色器处理
         ShaderData data1 = m_Shader->VertexShaderProcess(v1);
         ShaderData data2 = m_Shader->VertexShaderProcess(v2);
         ShaderData data3 = m_Shader->VertexShaderProcess(v3);
+        
         
         ShaderData::PerspectiveDivision(data1);
         ShaderData::PerspectiveDivision(data2);
         ShaderData::PerspectiveDivision(data3);
         
-        if(!FaceCulling(data1,data2,data3))
+        //背面剔除
+        if(!_FaceCulling(data1,data2,data3))
         {
             return;
         }
         
+        //转换为屏幕坐标
+        Matrix4x4f viewportMat = ShaderData::GetViewPortMatrix(0, 0, m_Width, m_Height);
         data1.m_PreviewPos = viewportMat * data1.m_PreviewPos;
         data2.m_PreviewPos = viewportMat * data2.m_PreviewPos;
         data3.m_PreviewPos = viewportMat * data3.m_PreviewPos;
         
+        //光栅化
         m_Rasterization->ScanLineTriangle(data1, data2, data3);
     }
     
@@ -192,7 +170,7 @@ public:
     void DrawMesh(const MeshData &mesh)
     {
         if(!m_IsInit) return;
-
+        
         const std::vector<Vertex>& vbo = mesh.GetVBO();
         const std::vector<unsigned int>& ebo = mesh.GetEBO();
         if (ebo.empty())
@@ -220,6 +198,39 @@ private:
         if(m_Shader) delete m_Shader;
         if(m_Rasterization) delete m_Rasterization;
         m_IsInit = false;
+    }
+    
+    void _CalculatFPS()
+    {
+        m_FPSIndex++;
+        long tmp = std::chrono::system_clock::now().time_since_epoch().count();;
+        if(m_FPSIndex == -1)
+        {
+            m_TimeIndex = tmp;
+        }
+        if(tmp - m_TimeIndex >= 1000000)
+        {
+            m_TimeIndex = tmp;
+            std::cout<< "FPS = " << m_FPSIndex << std::endl;
+            m_FPSIndex = 0;
+        }
+    }
+    
+    bool _FaceCulling(const ShaderData &v1,const ShaderData &v2,const ShaderData &v3)
+    {
+        Vector4f tmp1 = v2.m_PreviewPos - v1.m_PreviewPos;
+        Vector4f tmp2 = v3.m_PreviewPos - v1.m_PreviewPos;
+
+        float x = tmp1.GetY() * tmp2.GetZ() - tmp1.GetZ() * tmp2.GetY();
+        float y = tmp1.GetZ() * tmp2.GetX() - tmp1.GetX() * tmp2.GetZ();
+        float z = tmp1.GetX() * tmp2.GetY() - tmp1.GetY() * tmp2.GetX();
+        
+        Vector3f norm(x,y,z);
+        norm.Normalize();
+        
+        Vector3f dview(0.0f,0.0f,-1.0f);
+        float res = Vector3f::VecDot(norm, dview);
+        return res < 0.0f;
     }
     
 private:

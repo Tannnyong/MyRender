@@ -12,8 +12,16 @@
 #include "../transform/MatTransform.hpp"
 #include "../mesh/MeshData.hpp"
 
-int main(int argc, const char * argv[]) {
-    
+//long MarkCost(long last,std::string tag)
+//{
+//    long tmp = std::chrono::system_clock::now().time_since_epoch().count();
+//    int cost = (tmp - last)/ 1000;
+//    std::cout<< "MarkCost : "+ tag +" cost = "<< cost << std::endl;
+//    return tmp;
+//}
+
+int main(int argc, const char * argv[])
+{
     Drawer* drawer = new Drawer();
     drawer->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
     
@@ -59,29 +67,26 @@ int main(int argc, const char * argv[]) {
     
     Vector4f clearColor(0.0f,0.0f,0.0f,0.0f);
     
-    float angle = 0.0f;
     std::vector<float> t = {0.0f,0.0f,0.0f};
     std::vector<float> s = {1.0f,1.0f,1.0f};
-    
+    float angle = 0.0f;
     int key = 0;
     while (true)
     {
         drawer->ClearBuffer(clearColor);
-        
-        
-        MatTransform::GetInstance().GetTransFormParam(key,angle,t,s);
 
+        MatTransform::GetInstance().GetTransFormParam(key,angle,t,s);
         MatTransform::GetInstance().InitScaleMat(scaleMat, s);
         MatTransform::GetInstance().InitRotationAxisMat(rotationMat, angle, rotateAxis);
         MatTransform::GetInstance().InitTranslationMat(translationMat, t);
-        
         modelMat = translationMat * rotationMat * scaleMat;
         drawer->SetModelMatrix(modelMat);
+
     
         //drawer->DrawTriangle(v1, v2, v3);
         drawer->DrawMesh(mesh);
-        drawer->DrawAxis();
-        
+        //drawer->DrawAxis();
+
         drawer->Show();
         key = cv::waitKey(0);
     }

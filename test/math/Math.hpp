@@ -13,6 +13,9 @@
 #include "opencv2/core/matx.hpp"
 #include "opencv2/core/mat.hpp"
 
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 300
+
 class Vector2f
 {
 public:

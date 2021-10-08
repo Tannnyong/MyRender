@@ -74,6 +74,7 @@ public:
         return ret;
     }
     
+    //透视除法
     static void PerspectiveDivision(ShaderData& data)
     {
         data.m_PreviewPos =  data.m_PreviewPos / data.m_PreviewPos.GetW();

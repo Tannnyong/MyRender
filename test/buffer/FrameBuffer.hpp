@@ -15,7 +15,7 @@
 class FrameBuffer
 {
 public:
-    FrameBuffer(int w = 800, int h = 600)
+    FrameBuffer(int w = WINDOW_WIDTH, int h = WINDOW_HEIGHT)
     {
         m_With = w;
         m_Height = h;
@@ -26,19 +26,12 @@ public:
     
     void ClearColorBuffer(const Vector4f& color)
     {
-        unsigned char * p = m_ColorBuffer.data();
-        for (int i = 0; i < m_With*m_Height * 4; i += 4)
-        {
-            *(p + i) = color.GetX();
-            *(p + i + 1) = color.GetY();
-            *(p + i + 2) = color.GetZ();
-            *(p + i + 3) = color.GetW();
-        }
+        m_ColorBuffer.assign(m_ColorBuffer.size(), 0.0f);
     }
     
     void ClearDepthBuffer()
     {
-      m_DepthBuffer.assign(m_DepthBuffer.size(), 1.0f);
+        m_DepthBuffer.assign(m_DepthBuffer.size(), 1.0f);
     }
     
     void WritePoint(const int &x,const int &y, const Vector4f& color)

@@ -50,6 +50,7 @@ public:
     
     void ScanLineTriangle(const ShaderData& t1,const ShaderData& t2, const ShaderData& t3)
     {
+        
         if(!m_Buffer || !m_Shader)
         {
             std::cout<<"Error : m_Buffer or m_Shader is null"<<std::endl;
@@ -126,17 +127,20 @@ private:
             right = t2;
         }
         top = t3;
-        //fix2：旋转时有时会导致小数在0.1 - 0.9之间波动，加偏移会导致偶现黑色横条纹，提前整数化，防止出现黑色条纹
+        //fix2：整数化，防止出现黑色条纹
         left.IntegerizationXY();
         top.IntegerizationXY();
         right.IntegerizationXY();
         int dy = top.m_PreviewPos.GetY() - right.m_PreviewPos.GetY();
+        
+        ShaderData newleft;
+        ShaderData newright;
+        float weight = 0;
         for(int i = dy;i >= 0; i--)
         {
-            float weight = 0;
             if(dy != 0) weight = (float)i / dy;
-            ShaderData newleft = ShaderData::Interpolation(left, top, weight);
-            ShaderData newright = ShaderData::Interpolation(right, top, weight);
+            newleft = ShaderData::Interpolation(left, top, weight);
+            newright = ShaderData::Interpolation(right, top, weight);
             newleft.IntegerizationPosX();
             newright.IntegerizationPosX();
             _DrawLine(newleft,newright);
@@ -162,12 +166,15 @@ private:
         bottom.IntegerizationXY();
         right.IntegerizationXY();
         int dy = left.m_PreviewPos.GetY() - bottom.m_PreviewPos.GetY();
+        
+        ShaderData newleft;
+        ShaderData newright;
+        float weight = 0;
         for(int i = 0;i < dy; i++)
         {
-            float weight = 0;
             if(dy != 0) weight = (float)i / dy;
-            ShaderData newleft = ShaderData::Interpolation(left, bottom, weight);
-            ShaderData newright = ShaderData::Interpolation(right, bottom, weight);
+            newleft = ShaderData::Interpolation(left, bottom, weight);
+            newright = ShaderData::Interpolation(right, bottom, weight);
             newleft.IntegerizationPosX();
             newright.IntegerizationPosX();
             _DrawLine(newleft,newright);
